@@ -1,0 +1,11 @@
+.no-scrollbar {
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.transition {
+  transition: all 0.3s;
+}
