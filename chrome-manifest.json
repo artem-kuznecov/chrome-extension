@@ -1,0 +1,24 @@
+{
+  "name": "Bookmarks",
+  "version": "1.0.0",
+  "description": "Custom New Page extension with bookmarks access",
+  "manifest_version": 3,
+  "author": "Artem Kuznetsov",
+  "background": {
+    "service_worker": "assets/index.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "test title"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+      "bookmarks",
+      "tabs",
+      "background",
+      "storage",
+      "unlimitedStorage"
+  ]
+}
