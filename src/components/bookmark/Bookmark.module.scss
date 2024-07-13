@@ -1,4 +1,4 @@
-.link-plate {
+.link-plate, .link-signed {
   position: relative;
   background: rgb(48 48 48);
   border-radius: 8px;
@@ -16,6 +16,27 @@
     background: #fff;
     box-shadow: 0 0 10px rgb(48 48 48);
     cursor: pointer;
+
+    img {
+      height: 48px;
+    }
+  }
+
+  p.port {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    width: 80%;
+
+    display: inline;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    color: #000;
+    font-size: 16px;
+    cursor: default;
   }
 
   p {
@@ -42,5 +63,43 @@
     p {
       display: inline;
     }
+  }
+}
+
+.link-signed:hover a {
+  transform: none !important;
+}
+
+.button-plate {
+  position: relative;
+  background: rgb(128 128 128 / 50%);
+  border-radius: 8px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+
+  p {
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    width: 80%;
+
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    color: #505050;
+    font-size: 16px;
+  }
+
+  svg {
+    height: 64px;
+    width: 64px;
+    stroke: #505050;
+    stroke-width: 1.5;
   }
 }
