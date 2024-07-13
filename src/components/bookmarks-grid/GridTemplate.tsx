@@ -1,19 +1,87 @@
 import styles from'./Grid.module.scss'
+
+import { useEffect, useState } from 'react'
 import LinkPlate from '../bookmark/LinkPlate'
+import ButtonPlate from '../bookmark/ButtonPlate'
+
+import { getChromeBookmarks } from '../../api/chrome.api'
+import { convertBookmarks } from '../../api/processer.api'
+
+interface IBookmark {
+  id: string
+  title: string
+  parent_id: string
+  url?: string
+  userdata?: string
+  picture?: any
+  children?: any[]
+}
 
 const GridTemplate = () => {
+  const [currentFolder, setCurrentFolder] = useState<IBookmark>()
+  const [previousFolder, setPreviousFolder] = useState<IBookmark>()
+  const [allFolders, setAllFolders] = useState<IBookmark[]>([])
+
+  function changeCurrentFolder (id: string | undefined) {
+    if (!id) return
+    // Переход в предыдущую папку
+    if (Number(id) < Number(currentFolder?.id as string)) {
+      console.log('back to previous')
+      // Переход в начальную папку
+      if (id === '1') {
+        setCurrentFolder(allFolders.find(folder => folder.id === id))
+        setPreviousFolder(allFolders.find(folder => folder.id === id)) // TODO поправить (можно вообще убрать)
+      }
+      else {
+        if (!previousFolder?.children) return
+        setCurrentFolder(previousFolder)
+        setPreviousFolder(allFolders[0]) // TODO сделать массив прошлых папок
+      }
+      return
+    }
+    // Переход в следующую папку
+    if (currentFolder?.children) {
+      setPreviousFolder(currentFolder)
+      setCurrentFolder(currentFolder?.children.find(folder => folder.id === id))
+    }
+  }
+
+  useEffect(() => {
+    getChromeBookmarks()
+      .then(async chromeBookmarks => {
+        const processed = await convertBookmarks(chromeBookmarks[0])
+        setAllFolders(processed)
+        const currFold = processed[0]
+        setCurrentFolder(currFold as IBookmark)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [])
   return (
     <div className={styles['grid-template']}>
-      <p style={{ border: '1px solid black' }}>1</p>
-      <p style={{ border: '1px solid black' }}>2</p>
-      <p style={{ border: '1px solid black' }}>3</p>
-      <p style={{ border: '1px solid black' }}>4</p>
-      <p style={{ border: '1px solid black' }}>5</p>
-      <p style={{ border: '1px solid black' }}>6</p>
-      <p style={{ border: '1px solid black' }}>7</p>
-      <p style={{ border: '1px solid black' }}>8</p>
-      <p style={{ border: '1px solid black' }}>9</p>
-      <LinkPlate />
+      {
+        currentFolder?.id !== '1' &&
+        <ButtonPlate clickHandler={() => changeCurrentFolder(previousFolder?.id)} iconType='arrow' />
+      }
+      {
+        currentFolder?.children && currentFolder?.children.map((bookmark: IBookmark) => {
+          return (
+            <>
+              {
+                !bookmark.children ?
+                  <LinkPlate {...bookmark}/>
+                  :
+                  <ButtonPlate
+                    text={bookmark.title}
+                    clickHandler={() => changeCurrentFolder(bookmark.id)}
+                    iconType='folder'
+                  />
+              }
+            </>
+          )
+        })
+      }
     </div>
   )
 }
