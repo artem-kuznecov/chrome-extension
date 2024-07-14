@@ -1,9 +1,9 @@
 import styles from'./Grid.module.scss'
 
 import { useEffect, useState } from 'react'
+
 import LinkPlate from '../bookmark/LinkPlate'
 import ButtonPlate from '../bookmark/ButtonPlate'
-
 import { getChromeBookmarks } from '../../api/chrome.api'
 import { convertBookmarks } from '../../api/processer.api'
 
@@ -17,20 +17,17 @@ interface IBookmark {
   children?: any[]
 }
 
-const GridTemplate = () => {
+const GridTemplate = ({ handleToggleModal }: { handleToggleModal: any }) => {
   const [currentFolder, setCurrentFolder] = useState<IBookmark>()
   const [previousFolder, setPreviousFolder] = useState<IBookmark>()
   const [allFolders, setAllFolders] = useState<IBookmark[]>([])
 
   function changeCurrentFolder (id: string | undefined) {
     if (!id) return
-    // Переход в предыдущую папку
     if (Number(id) < Number(currentFolder?.id as string)) {
-      console.log('back to previous')
-      // Переход в начальную папку
+      // * Переход в начальную папку
       if (id === '1') {
         setCurrentFolder(allFolders.find(folder => folder.id === id))
-        setPreviousFolder(allFolders.find(folder => folder.id === id)) // TODO поправить (можно вообще убрать)
       }
       else {
         if (!previousFolder?.children) return
@@ -39,7 +36,7 @@ const GridTemplate = () => {
       }
       return
     }
-    // Переход в следующую папку
+    // * Переход в следующую папку
     if (currentFolder?.children) {
       setPreviousFolder(currentFolder)
       setCurrentFolder(currentFolder?.children.find(folder => folder.id === id))
@@ -53,6 +50,7 @@ const GridTemplate = () => {
         setAllFolders(processed)
         const currFold = processed[0]
         setCurrentFolder(currFold as IBookmark)
+        localStorage.setItem('currentFolder', currFold.id)
       })
       .catch((error) => {
         console.log(error)
@@ -82,6 +80,7 @@ const GridTemplate = () => {
           )
         })
       }
+      <ButtonPlate clickHandler={handleToggleModal} iconType='plus' />
     </div>
   )
 }

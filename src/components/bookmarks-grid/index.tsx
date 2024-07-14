@@ -1,10 +1,10 @@
 import { GridContainer } from './GridContainer'
 import { GridTemplate } from './GridTemplate'
 
-const BookmarksGrid = () => {
+const BookmarksGrid = ({ handleToggleModal }: { handleToggleModal: any }) => {
   return (
     <GridContainer>
-      <GridTemplate />
+      <GridTemplate handleToggleModal={handleToggleModal} />
     </GridContainer>
   )
 }
