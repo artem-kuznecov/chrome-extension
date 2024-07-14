@@ -62,4 +62,4 @@ const NewBookmark = observer(({ isOpen, handleToggleModal }: { isOpen: boolean, 
   )
 })
 
-export default NewBookmark
+export { NewBookmark }
