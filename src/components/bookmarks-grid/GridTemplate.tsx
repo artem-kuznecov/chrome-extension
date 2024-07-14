@@ -6,16 +6,7 @@ import LinkPlate from '../bookmark/LinkPlate'
 import ButtonPlate from '../bookmark/ButtonPlate'
 import { getChromeBookmarks } from '../../api/chrome.api'
 import { convertBookmarks } from '../../api/processer.api'
-
-interface IBookmark {
-  id: string
-  title: string
-  parent_id: string
-  url?: string
-  userdata?: string
-  picture?: any
-  children?: any[]
-}
+import type { IBookmark } from '../../data/types'
 
 const GridTemplate = ({ handleToggleModal }: { handleToggleModal: any }) => {
   const [currentFolder, setCurrentFolder] = useState<IBookmark>()

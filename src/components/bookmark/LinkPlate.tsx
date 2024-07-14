@@ -1,16 +1,7 @@
 import styles from'./Bookmark.module.scss'
 
 import { getThumbnail } from '../../utils/getThumbnail.util'
-
-interface IBookmark {
-  id: string
-  title: string
-  parent_id: string
-  url?: string
-  userdata?: string
-  picture?: any
-  children?: IBookmark[]
-}
+import type { IBookmark } from '../../data/types'
 
 const LinkPlate = (bookmark: IBookmark) => {
   const thumbnail = getThumbnail(bookmark.url || '')

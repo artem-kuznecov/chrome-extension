@@ -1,12 +1,4 @@
-export interface IBookmark {
-  id: string
-  title: string
-  parent_id: string
-  url?: string
-  userdata?: string
-  picture?: any
-  children?: IBookmark[]
-}
+import type { IBookmark } from '../data/types'
 
 function sortByType (data: IBookmark[], sortingParameter: string) {
   let sorted: IBookmark[] = []
