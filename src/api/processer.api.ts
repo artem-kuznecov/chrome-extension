@@ -1,3 +1,4 @@
+import { separator } from '@/data/constants'
 import type { IBookmark } from '@/data/types'
 
 function sortByType (data: IBookmark[], sortingParameter: string) {
@@ -25,14 +26,14 @@ export async function convertBookmarks (
   return await Promise.all(bookmarksObject.children.map(
     async (child: chrome.bookmarks.BookmarkTreeNode): Promise<IBookmark>  => {
       if (!child.children) {
-        const isTitled = child.title.includes('|')
+        const isTitled = child.title.includes(separator)
         if (isTitled)
           return {
             id: child.id,
-            title: child.title.split('|')[0].trim(),
+            title: child.title.split(separator)[0].trim(),
             parent_id: child.parentId as string,
             url: child.url as string,
-            userdata: child.title.split('|')[1].trim()
+            userdata: child.title.split(separator)[1].trim()
           }
         return {
           id: child.id,

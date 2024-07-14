@@ -1,4 +1,4 @@
-import { knownDomains } from '../data/knownDomains'
+import { knownDomains } from '../data/constants'
 
 // * Выделение домена из URL
 function cleanUpURL (url: string) {

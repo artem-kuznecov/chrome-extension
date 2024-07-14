@@ -1,3 +1,5 @@
+import { separator } from '@/data/constants'
+
 export async function getChromeBookmarks () {
   try {
     const bookmarks = await chrome.bookmarks.getTree()
@@ -10,7 +12,7 @@ export async function getChromeBookmarks () {
 export async function createChromeBookmark (data: any, parentID: string) {
   const newBookmark = await chrome.bookmarks.create(
     {
-      title: data.userdata ? data.title + ' | ' + data.userdata : data.title,
+      title: data.userdata ? data.title + separator + data.userdata : data.title,
       url: data.url ?? null,
       parentId: parentID
     }

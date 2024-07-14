@@ -21,3 +21,5 @@ export const knownDomains: string[] = [
   'youtube',
   'bmstu'
 ]
+
+export const separator: string = '&&$#'

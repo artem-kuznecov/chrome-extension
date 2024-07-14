@@ -24,6 +24,11 @@ const NewBookmark = observer(({ isOpen, handleToggleModal }: { isOpen: boolean, 
     createChromeBookmark(formData, currentFolder.id || '0').then(() => {
       toggleTrigger()
     })
+    setFormdata({
+      title: '',
+      url: '',
+      userdata: ''
+    })
     handleToggleModal()
   }
 
@@ -44,7 +49,7 @@ const NewBookmark = observer(({ isOpen, handleToggleModal }: { isOpen: boolean, 
         </section>
         <section>
           <label htmlFor="url">Название</label>
-          <input id="name" name="name" type="text" placeholder='Моя закладка' onChange={e => handleFormChange(e)} />
+          <input id="name" name="title" type="text" placeholder='Моя закладка' onChange={e => handleFormChange(e)} />
         </section>
         <section>
           <label htmlFor="userdata">Подпись закладки</label>
