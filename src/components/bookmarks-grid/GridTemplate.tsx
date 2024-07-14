@@ -1,6 +1,6 @@
 import styles from'./Grid.module.scss'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import LinkPlate from '../bookmark/LinkPlate'
 import ButtonPlate from '../bookmark/ButtonPlate'
@@ -8,10 +8,19 @@ import { getChromeBookmarks } from '../../api/chrome.api'
 import { convertBookmarks } from '../../api/processer.api'
 import type { IBookmark } from '../../data/types'
 
-const GridTemplate = ({ handleToggleModal }: { handleToggleModal: any }) => {
-  const [currentFolder, setCurrentFolder] = useState<IBookmark>()
-  const [previousFolder, setPreviousFolder] = useState<IBookmark>()
-  const [allFolders, setAllFolders] = useState<IBookmark[]>([])
+import { bookmarksStore } from '../../store/Bookmarks.store'
+import { observer } from 'mobx-react-lite'
+
+const GridTemplate = observer(({ handleToggleModal }: { handleToggleModal: any }) => {
+  const {
+    allFolders,
+    currentFolder,
+    previousFolder,
+    setAllFolders,
+    setCurrentFolder,
+    setPreviousFolder,
+    trigger
+  } = bookmarksStore
 
   function changeCurrentFolder (id: string | undefined) {
     if (!id) return
@@ -46,7 +55,11 @@ const GridTemplate = ({ handleToggleModal }: { handleToggleModal: any }) => {
       .catch((error) => {
         console.log(error)
       })
-  }, [])
+  }, [
+    setAllFolders,
+    setCurrentFolder,
+    trigger
+  ])
   return (
     <div className={styles['grid-template']}>
       {
@@ -74,6 +87,6 @@ const GridTemplate = ({ handleToggleModal }: { handleToggleModal: any }) => {
       <ButtonPlate clickHandler={handleToggleModal} iconType='plus' />
     </div>
   )
-}
+})
 
 export { GridTemplate }

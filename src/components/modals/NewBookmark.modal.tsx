@@ -5,15 +5,21 @@ import { createChromeBookmark } from '../../api/chrome.api'
 
 import { useClickOutside } from '../../hooks/useClickOutside'
 
-const NewBookmark = ({ isOpen, handleToggleModal }: { isOpen: boolean, handleToggleModal: any }) => {
+import { bookmarksStore } from '../../store/Bookmarks.store'
+import { observer } from 'mobx-react-lite'
+
+const NewBookmark = observer(({ isOpen, handleToggleModal }: { isOpen: boolean, handleToggleModal: any }) => {
+
+  const { currentFolder, toggleTrigger } = bookmarksStore
 
   const modalWrapper = useRef(null)
   useClickOutside(modalWrapper, handleToggleModal, isOpen)
 
   function createNewBookmark (e: FormEvent) {
     e.preventDefault()
-    createChromeBookmark(formData, localStorage.getItem('currentFolder') || '0').then(newOne => {
+    createChromeBookmark(formData, currentFolder.id || '0').then(newOne => {
       console.log({ newOne })
+      toggleTrigger()
     })
     handleToggleModal()
   }
@@ -52,6 +58,6 @@ const NewBookmark = ({ isOpen, handleToggleModal }: { isOpen: boolean, handleTog
       <button type='submit'>Создать</button>
     </form>
   )
-}
+})
 
 export default NewBookmark
