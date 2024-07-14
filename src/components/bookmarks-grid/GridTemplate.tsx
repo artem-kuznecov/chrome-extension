@@ -1,15 +1,16 @@
 import styles from'./Grid.module.scss'
 
 import { useEffect } from 'react'
-
-import LinkPlate from '../bookmark/LinkPlate'
-import ButtonPlate from '../bookmark/ButtonPlate'
-import { getChromeBookmarks } from '../../api/chrome.api'
-import { convertBookmarks } from '../../api/processer.api'
-import type { IBookmark } from '../../data/types'
-
-import { bookmarksStore } from '../../store/Bookmarks.store'
 import { observer } from 'mobx-react-lite'
+
+import { LinkPlate } from '@/components/bookmark/LinkPlate'
+import { ButtonPlate } from '@/components/bookmark/ButtonPlate'
+
+import { getChromeBookmarks } from '@/api/chrome.api'
+import { convertBookmarks } from '@/api/processer.api'
+
+import { bookmarksStore } from '@/store/Bookmarks.store'
+import type { IBookmark } from '@/data/types'
 
 const GridTemplate = observer(({ handleToggleModal }: { handleToggleModal: any }) => {
   const {
@@ -50,7 +51,6 @@ const GridTemplate = observer(({ handleToggleModal }: { handleToggleModal: any }
         setAllFolders(processed)
         const currFold = processed[0]
         setCurrentFolder(currFold as IBookmark)
-        localStorage.setItem('currentFolder', currFold.id)
       })
       .catch((error) => {
         console.log(error)

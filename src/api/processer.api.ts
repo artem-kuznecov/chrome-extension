@@ -1,4 +1,4 @@
-import type { IBookmark } from '../data/types'
+import type { IBookmark } from '@/data/types'
 
 function sortByType (data: IBookmark[], sortingParameter: string) {
   let sorted: IBookmark[] = []

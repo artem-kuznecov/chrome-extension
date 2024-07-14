@@ -1,34 +1,31 @@
 import styles from'./Modal.module.scss'
 
-import { ChangeEvent, FormEvent, useState, useRef } from 'react'
-import { createChromeBookmark } from '../../api/chrome.api'
-
-import { useClickOutside } from '../../hooks/useClickOutside'
-
-import { bookmarksStore } from '../../store/Bookmarks.store'
+import { useState, useRef, ChangeEvent, FormEvent  } from 'react'
 import { observer } from 'mobx-react-lite'
 
+import { createChromeBookmark } from '@/api/chrome.api'
+
+import { useClickOutside } from '@/hooks/useClickOutside'
+
+import { bookmarksStore } from '@/store/Bookmarks.store'
+
 const NewBookmark = observer(({ isOpen, handleToggleModal }: { isOpen: boolean, handleToggleModal: any }) => {
-
   const { currentFolder, toggleTrigger } = bookmarksStore
-
-  const modalWrapper = useRef(null)
-  useClickOutside(modalWrapper, handleToggleModal, isOpen)
-
-  function createNewBookmark (e: FormEvent) {
-    e.preventDefault()
-    createChromeBookmark(formData, currentFolder.id || '0').then(newOne => {
-      console.log({ newOne })
-      toggleTrigger()
-    })
-    handleToggleModal()
-  }
-
   const [formData, setFormdata] = useState({
     title: '',
     url: '',
     userdata: ''
   })
+  const modalWrapper = useRef(null)
+  useClickOutside(modalWrapper, handleToggleModal, isOpen)
+
+  function createNewBookmark (e: FormEvent) {
+    e.preventDefault()
+    createChromeBookmark(formData, currentFolder.id || '0').then(() => {
+      toggleTrigger()
+    })
+    handleToggleModal()
+  }
 
   function handleFormChange (e: ChangeEvent<HTMLInputElement>) {
     setFormdata({

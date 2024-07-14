@@ -2,9 +2,9 @@
 
 import styles from'./Bookmark.module.scss'
 
-import FolderMinus from '../../theme/icons/folder-minus.svg?react'
-import ArrowLeft from '../../theme/icons/arrow-left.svg?react'
-import Plus from '../../theme/icons/plus.svg?react'
+import FolderMinus from '@/theme/icons/folder-minus.svg?react'
+import ArrowLeft from '@/theme/icons/arrow-left.svg?react'
+import Plus from '@/theme/icons/plus.svg?react'
 
 const ButtonPlate = ({ text, clickHandler, iconType }: { text?: string, clickHandler: any, iconType: string }) => {
   return (
@@ -17,4 +17,4 @@ const ButtonPlate = ({ text, clickHandler, iconType }: { text?: string, clickHan
   )
 }
 
-export default ButtonPlate
+export { ButtonPlate }

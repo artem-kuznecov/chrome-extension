@@ -36,7 +36,6 @@ class BookmarksStore {
   }
 
   toggleTrigger = (): void => {
-    console.log('trigger')
     this.trigger = !this.trigger
   }
 }
