@@ -4,3 +4,24 @@
   box-sizing: border-box;
   font-family: 'Play', sans-serif;
 }
+
+body {
+  background: yellow;
+  overflow: hidden;
+}
+
+.veil {
+  @extend .transition;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background: rgb(0 0 0 / 50%);
+  opacity: 0;
+  pointer-events: none;
+
+  z-index: 1;
+
+  &[data-open='true'] {
+    opacity: 1;
+  }
+}
