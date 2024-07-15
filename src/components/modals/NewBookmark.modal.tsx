@@ -3,31 +3,30 @@ import styles from'./Modal.module.scss'
 import { useState, useRef, ChangeEvent, FormEvent  } from 'react'
 
 import { createChromeBookmark } from '@/api/chrome.api'
-// import { convertBookmarks } from '@/api/processer.api'
-
 import { useClickOutside } from '@/hooks/useClickOutside'
-import { IBookmark } from '@/data/types'
+import type { IBookmark } from '@/data/types'
 
-const NewBookmark = (
-  { isOpen, handleToggleModal, currentFolder }:
-  {
-    isOpen: boolean,
-    handleToggleModal: any,
-    currentFolder: IBookmark
-  }
-) => {
+type ModalPropsType = {
+  isOpen: boolean,
+  handleToggleModal: any,
+  currentFolder: IBookmark,
+  localStorageItemName: string
+}
+
+const NewBookmark = ({ isOpen, handleToggleModal, currentFolder, localStorageItemName }: ModalPropsType) => {
+  const modalWrapper = useRef(null)
+  useClickOutside(modalWrapper, handleToggleModal, isOpen)
+
   const [formData, setFormdata] = useState({
     title: '',
     url: '',
     userdata: ''
   })
-  const modalWrapper = useRef(null)
-  useClickOutside(modalWrapper, handleToggleModal, isOpen)
 
   function createNewBookmark (e: FormEvent) {
     e.preventDefault()
     createChromeBookmark(formData, currentFolder.id || '0').then(async newBookmark => {
-      localStorage.setItem('folderToMoveTo', newBookmark?.parentId as string)
+      localStorage.setItem(localStorageItemName, newBookmark?.parentId as string)
       setFormdata({
         title: '',
         url: '',

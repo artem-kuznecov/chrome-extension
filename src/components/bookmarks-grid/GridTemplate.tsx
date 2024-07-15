@@ -4,29 +4,24 @@ import { useEffect, useState } from 'react'
 
 import { LinkPlate } from '@/components/bookmark/LinkPlate'
 import { ButtonPlate } from '@/components/bookmark/ButtonPlate'
+import { NewBookmark } from '@/components/modals/NewBookmark.modal'
 
 import { getChromeBookmarks } from '@/api/chrome.api'
 import { convertBookmarks } from '@/api/processer.api'
 
 import type { IBookmark } from '@/data/types'
 
-import { NewBookmark } from '@/components/modals/NewBookmark.modal'
+const LOCALSTORAGE_FOLDER_SAVER_NAME = 'currentFolderSetter'
 
 const GridTemplate = () => {
-  function handler () {
-    console.log('bookmark.onCreated')
+  chrome.bookmarks.onCreated.addListener(() => {
     setCurrentFolderLocal(() => undefined)
-  }
-  chrome.bookmarks.onCreated.addListener(handler)
+  })
 
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [allFoldersLocal, setAllFoldersLocal] = useState<IBookmark[]>([])
   const [currentFolderLocal, setCurrentFolderLocal] = useState<IBookmark>()
   const [previousFolderLocal, setPreviousFolderLocal] = useState<IBookmark>()
-
-  function toggleModal () {
-    setModalOpen(prev => !prev)
-  }
 
   function changeCurrentFolder (id: string | undefined) {
     if (!id) return
@@ -50,28 +45,22 @@ const GridTemplate = () => {
   }
 
   useEffect(() => {
-    console.log('TEST:', localStorage.getItem('folderToMoveTo'))
-
-    console.log('useEffect in GridTemplate')
     getChromeBookmarks()
       .then(async chromeBookmarks => {
         const processed = await convertBookmarks(chromeBookmarks[0])
-        console.log({ processed })
         setAllFoldersLocal(processed)
-        console.log({ currentFolderLocal })
-        if (localStorage.getItem('folderToMoveTo')) {
+        if (localStorage.getItem(LOCALSTORAGE_FOLDER_SAVER_NAME)) {
           // * Если это начальная папка
-          if (localStorage.getItem('folderToMoveTo') === '1') setCurrentFolderLocal(processed[0])
+          if (localStorage.getItem(LOCALSTORAGE_FOLDER_SAVER_NAME) === '1') setCurrentFolderLocal(processed[0])
           else setCurrentFolderLocal(processed[0].children?.find(child => child.id === localStorage.getItem('folderToMoveTo')))
-          localStorage.removeItem('folderToMoveTo')
+          localStorage.removeItem(LOCALSTORAGE_FOLDER_SAVER_NAME)
         }
         else setCurrentFolderLocal(currentFolderLocal || processed[0])
       })
       .catch((error) => {
         console.log(error)
       })
-  }, [currentFolderLocal]
-  )
+  }, [currentFolderLocal])
 
   return (
     <>
@@ -99,12 +88,13 @@ const GridTemplate = () => {
             )
           })
         }
-        <ButtonPlate clickHandler={toggleModal} iconType='plus' />
+        <ButtonPlate clickHandler={() => setModalOpen(prev => !prev)} iconType='plus' />
       </div>
       <NewBookmark
         isOpen={modalOpen}
-        handleToggleModal={toggleModal}
+        handleToggleModal={() => setModalOpen(prev => !prev)}
         currentFolder={currentFolderLocal as IBookmark}
+        localStorageItemName={LOCALSTORAGE_FOLDER_SAVER_NAME}
       />
     </>
   )
