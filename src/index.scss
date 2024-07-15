@@ -1,3 +1,5 @@
+$background-color: #fff;
+
 * {
   margin: 0;
   padding: 0;
@@ -37,6 +39,7 @@ body {
   top: 16px;
   left: 16px;
   cursor: pointer;
+  stroke: $background-color;
   filter: invert(100%);
   opacity: 0.6;
 
