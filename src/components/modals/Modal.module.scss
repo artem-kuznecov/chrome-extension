@@ -1,22 +1,13 @@
 .new-bookmark {
-  // DEV убрать
-  // display: none !important;
-
   @extend .transition;
   position: absolute;
   top: 16px;
-  // right: 16px;
   right: -360px;
   padding: 16px;
-
-  // width: 20%;
-  // min-width: 350px;
+  border-radius: 8px;
   width: 350px;
   height: fit-content;
-
   z-index: 2;
-
-  border-radius: 8px;
 
   box-shadow: 0 0 10px rgb(48 48 48);
   background: #fff;
