@@ -5,13 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && cp chrome-manifest.json dist/manifest.json",
+    "build:dev": "tsc -b && vite build --mode dev && cp chrome-manifest.json dist/manifest.json",
+    "build": "tsc -b && vite build --mode prod && cp chrome-manifest.json dist/manifest.json",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
-    "mobx": "^6.13.0",
-    "mobx-react-lite": "^4.0.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "vite-plugin-svgr": "^4.2.0"

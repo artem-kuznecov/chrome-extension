@@ -10,12 +10,16 @@ export async function getChromeBookmarks () {
 }
 
 export async function createChromeBookmark (data: any, parentID: string) {
-  const newBookmark = await chrome.bookmarks.create(
-    {
-      title: data.userdata ? data.title + separator + data.userdata : data.title,
-      url: data.url ?? null,
-      parentId: parentID
-    }
-  )
-  return newBookmark
+  try {
+    const newBookmark = await chrome.bookmarks.create(
+      {
+        title: data.userdata ? data.title + separator + data.userdata : data.title,
+        url: data.url ?? null,
+        parentId: parentID
+      }
+    )
+    return newBookmark
+  } catch (error) {
+    return undefined
+  }
 }
