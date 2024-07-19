@@ -1,7 +1,6 @@
 .grid-template {
-  @extend .no-scrollbar;
-  height: 100%;
-  padding-block: 3vh;
+  width: 70%;
+  margin-left: 15%;
 
   display: grid;
   justify-content: center;
@@ -9,11 +8,12 @@
   grid-template-columns: repeat(auto-fit, 190px);
   grid-auto-rows: 130px;
 
-  overflow-y: scroll;
+  overflow: visible;
 }
 
 .grid-container {
-  height: 100vh;
-  width: 70%;
-  margin-left: 15%;
+  height: 100%;
+  width: 100%;
+
+  padding-block: 3vh;
 }

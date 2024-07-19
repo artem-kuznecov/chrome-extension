@@ -7,8 +7,20 @@ $background-color: #fff;
   font-family: 'Play', sans-serif;
 }
 
+html {
+  @extend .no-scrollbar;
+}
+
 body {
-  overflow: hidden;
+  @extend .no-scrollbar;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 #root {

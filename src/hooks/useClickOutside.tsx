@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
-export function useClickOutside (ref: any, handler: any, shouldTriggerHandler: boolean) {
+export function useClickOutside (ref: any, handler: any, shouldTriggerHandler?: boolean) {
   useEffect(() => {
     function handleClickOutside (event: any) {
       if (ref.current && !ref.current.contains(event.target)) {
-        if (shouldTriggerHandler) handler()
+        if (shouldTriggerHandler && shouldTriggerHandler !== undefined) handler()
       }
     }
     document.addEventListener('mousedown', handleClickOutside)

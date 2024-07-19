@@ -1,6 +1,6 @@
 import styles from'./Grid.module.scss'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, MouseEvent } from 'react'
 
 import { LinkPlate } from '@/components/bookmark/LinkPlate'
 import { ButtonPlate } from '@/components/bookmark/ButtonPlate'
@@ -14,6 +14,7 @@ import type { IBookmark } from '@/data/types'
 const LOCALSTORAGE_FOLDER_SAVER_NAME = 'currentFolderSetter'
 
 const GridTemplate = () => {
+  // * Отслеживание событий изменения закладок
   chrome.bookmarks.onCreated.addListener(() => {
     setCurrentFolderLocal(() => undefined)
   })
@@ -22,6 +23,17 @@ const GridTemplate = () => {
   const [allFoldersLocal, setAllFoldersLocal] = useState<IBookmark[]>([])
   const [currentFolderLocal, setCurrentFolderLocal] = useState<IBookmark>()
   const [previousFolderLocal, setPreviousFolderLocal] = useState<IBookmark>()
+  const [activeDropdownElement, setDropwdownElement] = useState<string>('')
+
+  function toggleContextMenu (e: MouseEvent<SVGSVGElement>) {
+    if (!e) {
+      setDropwdownElement('')
+      return
+    }
+    const target = e.target as SVGSVGElement
+    e.preventDefault()
+    setDropwdownElement(target.dataset.id as string)
+  }
 
   function changeCurrentFolder (id: string | undefined) {
     if (!id) return
@@ -76,7 +88,11 @@ const GridTemplate = () => {
               <>
                 {
                   !bookmark.children ?
-                    <LinkPlate {...bookmark}/>
+                    <LinkPlate
+                      bookmark={bookmark}
+                      activeDropdownElement={activeDropdownElement}
+                      toggleContextMenu={toggleContextMenu}
+                    />
                     :
                     <ButtonPlate
                       text={bookmark.title}
